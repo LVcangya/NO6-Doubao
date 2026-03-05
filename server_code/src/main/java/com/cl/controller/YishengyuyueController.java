@@ -47,6 +47,8 @@ import com.cl.utils.CommonUtil;
 public class YishengyuyueController {
     @Autowired
     private YishengyuyueService yishengyuyueService;
+    @Autowired
+    private com.cl.service.NotificationService notificationService;
 
 
 
@@ -149,6 +151,7 @@ public class YishengyuyueController {
     public R save(@RequestBody YishengyuyueEntity yishengyuyue, HttpServletRequest request){
     	//ValidatorUtils.validateEntity(yishengyuyue);
         yishengyuyueService.insert(yishengyuyue);
+        notificationService.createNotificationAfterBooking(yishengyuyue);
         return R.ok();
     }
     
@@ -160,6 +163,7 @@ public class YishengyuyueController {
     public R add(@RequestBody YishengyuyueEntity yishengyuyue, HttpServletRequest request){
     	//ValidatorUtils.validateEntity(yishengyuyue);
         yishengyuyueService.insert(yishengyuyue);
+        notificationService.createNotificationAfterBooking(yishengyuyue);
         return R.ok();
     }
 

@@ -13,6 +13,10 @@
         <result property="zhanghao" column="zhanghao"/>
         <result property="shouji" column="shouji"/>
         <result property="tongzhibeizhu" column="tongzhibeizhu"/>
+        <result property="sendstatus" column="sendstatus"/>
+        <result property="retrycount" column="retrycount"/>
+        <result property="failreason" column="failreason"/>
+        <result property="lastsendtime" column="lastsendtime"/>
     </resultMap>
 
     <select id="selectListView"

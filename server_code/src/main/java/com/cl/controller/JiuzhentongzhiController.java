@@ -47,6 +47,8 @@ import com.cl.utils.CommonUtil;
 public class JiuzhentongzhiController {
     @Autowired
     private JiuzhentongzhiService jiuzhentongzhiService;
+    @Autowired
+    private com.cl.service.NotificationService notificationService;
 
 
 
@@ -189,6 +191,27 @@ public class JiuzhentongzhiController {
     public R delete(@RequestBody Long[] ids){
         jiuzhentongzhiService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
+    }
+    
+    /**
+     * 手动重试通知
+     */
+    @RequestMapping("/retry/{id}")
+    @org.springframework.transaction.annotation.Transactional
+    @SysLog("手动重试通知")
+    public R retry(@PathVariable("id") Long id, javax.servlet.http.HttpServletRequest request){
+        com.cl.entity.JiuzhentongzhiEntity notification = jiuzhentongzhiService.selectById(id);
+        if (notification == null) {
+            return R.error("通知不存在");
+        }
+        String tableName = request.getSession().getAttribute("tableName").toString();
+        String username = (String)request.getSession().getAttribute("username");
+        boolean success = notificationService.sendNotification(notification, username);
+        if (success) {
+            return R.ok("重试成功");
+        } else {
+            return R.error("重试失败，请查看通知记录详情");
+        }
     }
     
 	
